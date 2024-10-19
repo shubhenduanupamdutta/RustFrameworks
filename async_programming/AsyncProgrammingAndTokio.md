@@ -1,0 +1,15 @@
+# Core Concepts of Tokio
+-----------
+- ### Tokio Runtime
+    - Tokio runtime is the environment that executes asynchronous tasks.
+    - It is responsible for:
+        - Scheduling tasks.
+        - Polling futures.
+        - Reacting to I/O events.
+- ### Futures
+    - Futures are asynchronous computations that represent eventual completion of a task.
+    - Futures are lazy and do not start executing until they are polled.
+    - Futures are polled by the Tokio runtime.
+- ### Async/Await
+    - Async/Await is a syntax that allows you to write asynchronous code that looks like synchronous code, it makes asynchronous code more readable and intuitive.
+    - It is built on top of futures and is a more ergonomic way to write asynchronous code.
