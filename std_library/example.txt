@@ -1,0 +1,4 @@
+# Generate random text
+echo "Hello, World!" > std_library/example.txt
+My first example is a simple one-liner that creates a file called example.txt in the std_library directory and writes the text Hello, World! to it. The > operator is used to redirect the output of the echo command to the file.
+
