@@ -2,7 +2,7 @@
 //            Standard Library
 //----------------------------------------------------
 
-use std_library::{example_01, example_02_a, example_02_b, example_02_c, example_02_d};
+use std_library::{example_01, example_02_a, example_02_b, example_02_c, example_02_d, server_examples};
 
 fn main() {
     println!();
@@ -29,4 +29,10 @@ fn main() {
     println!();
     println!("########### Example 02_D - Queues - VecDeque ###########");
     example_02_d::main();
+
+    println!();
+    println!("-------------------------------------------------");
+    println!("              Server Examples");
+    println!("-------------------------------------------------");
+    server_examples::main();
 }
