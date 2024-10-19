@@ -2,7 +2,7 @@
 //            Standard Library
 //----------------------------------------------------
 
-use std_library::{datetime_examples, example_01, example_02_a, example_02_b, example_02_c, example_02_d, server_examples};
+use std_library::{cli_example, datetime_examples, example_01, example_02_a, example_02_b, example_02_c, example_02_d, server_examples};
 
 fn main() {
     println!();
@@ -35,6 +35,12 @@ fn main() {
     println!("              DateTime Examples");
     println!("-------------------------------------------------");
     datetime_examples::main();
+
+    println!();
+    println!("-------------------------------------------------");
+    println!("              CLI, Environment Variables Examples");
+    println!("-------------------------------------------------");
+    cli_example::main();
 
     println!();
     println!("-------------------------------------------------");
