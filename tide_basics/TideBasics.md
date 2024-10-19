@@ -101,3 +101,34 @@ async fn main() -> tide::Result<()> {
 ```
 _With free-form composition you can define routes independently, allowing you for more dynamic composition of routes._
 _In the above example we have two routes `/hello` and `/greet` which are not nested under any common prefix. And each route have their own handler functions._
+
+---
+## Use Cases for Tide
+---
+### Characteristics of Tide
+- Lightweight
+- Asynchronous
+- Simple
+- Flexible
+- Minimalistic
+
+_Tide is a lightweight asynchronous web-framework designed for simplicity and flexibility. Its a great fit when you need a minimalistic framework with excellent support for synchronous operations._
+
+### Use Cases
+- Microservices
+- Prototyping and Rapid Development
+- Learning Async Rust 
+
+---
+## Limitations of Tide
+---
+- #### Lack of batteries-included features
+    _Tide is a minimalistic framework and does not provide batteries-included features like ORM, Authentication, etc. You will need to integrate third-party libraries to add these features._
+- #### Community Maturity
+    _Tide is a relatively new framework and has a smaller community compared to other Rust web frameworks. This may result in slower adoption and fewer resources available._
+- #### Enterprise-grade Features
+    _Tide may not be the best choice for enterprise-grade applications that require extensive features, like built-in authentication, complex middleware support and extensive documentation and support. You may need to evaluate other frameworks like Actix-web or Rocket for such use-cases._
+
+---
+## Conclusion
+### _Tide is a fantastic choice for specific use cases where its strengths align with your project requirements. Understanding its limitations help you make informed decisions when selecting a framework._ 
