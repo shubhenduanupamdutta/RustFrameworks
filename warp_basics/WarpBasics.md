@@ -35,3 +35,24 @@ _Power of filters comes from being able to isolate small subsets of your applica
 - **Transform Data** - _Modify the request or response data seamlessly._
 - **Compose Routes** - _Combine multiple filters to create complex routes. You can assemble intricate routes by combining and reusing filters._
 ---
+
+```rust
+use warp::Filter;
+
+#[tokio::main]
+async fn main() {
+    // Define a simple filter that responds to a specific path
+    let hello = warp::path!("hello" / "world")
+        .and_then(|| {
+            // Introduces and asynchronous operation in the handler
+            async {
+                Ok::<_, warp::Rejection>(warp::reply::html("Hello, Warp!"))
+            }
+        });
+    
+    // Start the warp server with our filter
+    warp::serve(hello).run(([127, 0, 0, 1], 3030)).await;
+}
+```
+- `warp::path!` is macro that constructs a filter that matches a request to the specified path segments.
+- `and_then` is a combinator that takes a closure and returns a new filter that applies the closure to the request.
