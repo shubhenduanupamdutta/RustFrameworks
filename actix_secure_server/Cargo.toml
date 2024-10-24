@@ -1,0 +1,9 @@
+[package]
+name = "actix_secure_server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix = "0.13.5"
+actix-web = { version = "4.9.0", features = ["openssl"] }
+openssl = "0.10.68"

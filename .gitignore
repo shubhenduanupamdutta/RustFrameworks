@@ -1,2 +1,6 @@
 RustFrameworks.code-workspace
 target/
+*.pem
+*.key
+*.cert
+*.crt
