@@ -58,3 +58,100 @@ async fn main() -> std::io::Result<()> {
 ## Actix TLS
 ---
 _In this section, we will explore how to add TLS support to an Actix Web server. TLS (Transport Layer Security) is a cryptographic protocol that provides secure communication over a computer network. It is widely used to secure web traffic and protect sensitive data._
+
+```rust
+//! Secure actix web server to handle HTTP Requests over HTTPS using OpenSSL for TLS encryption.
+use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+use std::io::Result;
+
+async fn index(_req: HttpRequest) -> impl Responder {
+    "Hello world!"
+}
+
+#[actix_web::main]
+async fn main() -> Result<()> {
+    // Load TLS Keys
+    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+    builder
+        .set_private_key_file("caKey.pem", SslFiletype::PEM)
+        .unwrap();
+    builder.set_certificate_chain_file("host.cert").unwrap();
+
+    // Start HTTP Server
+    HttpServer::new(|| App::new().route("/", web::get().to(index)))
+        .bind_openssl("127.0.0.1:8080", builder)?
+        .run()
+        .await
+}
+```
+- Private Key and Certificate for Localhost can be generated using the following commands:
+```bash
+openssl genrsa 2048 > host.key
+chmod 400 host.key
+openssl req -new -x509 -nodes -sha256 -days 365 -key host.key -out host.cert
+```
+- `SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap()` creates a new instance of SslAcceptor with the Mozilla intermediate security profile.
+- `builder.set_private_key_file("caKey.pem", SslFiletype::PEM).unwrap()` sets the private key file for the server.
+- `builder.set_certificate_chain_file("host.cert").unwrap()` sets the certificate chain file for the server.
+- `HttpServer::new()` creates a new instance of the HttpServer.
+
+---
+## Actix Features
+---
+### _Actix Web has many powerful features, most powerful among them being:_
+
+- **Keep-Alive**
+- **Graceful Shutdown**
+
+_These features take care of important areas of server administration, and make our lives as developers easier._
+
+=========================================================
+#### Keep-Alive
+_Keep-Alive is a feature that allows the same TCP connection to be used for multiple requests/responses, instead of opening a new connection for each request. This can significantly reduce the overhead of establishing new connections and improve the performance of the server._
+```rust
+use actix_web::{web, App, HttpServer, HttpResponse};
+
+async fn index() -> HttpResponse {
+    HttpResponse::Ok().body("Hello, Actix with Keep Alive!")
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new().route("/", web::get().to(index))
+    })
+    .keep_alive(75) // Set keep alive timeouts in seconds
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
+}
+```
+- `.keep_alive(75)` sets the keep-alive timeout to 75 seconds. That means the server will keep the connection alive for 75 seconds after the last request/response.
+
+=========================================================
+#### Graceful Shutdown
+_Graceful Shutdown is a feature that allows the server to finish processing existing requests before shutting down. This ensures that no requests are interrupted or lost during the shutdown process. This ensures that data loss and abrupt disconnection never happens._
+```rust
+use actix_web::{web, App, HttpServer, HttpResponse};
+use std::time::Duration;
+
+async fn index() -> HttpResponse {
+    HttpResponse::Ok().body("Hello, Actix with Graceful Shutdown!")
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new().route("/", web::get().to(index))
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
+    .unwrap_or_else(|err| { // We handle graceful shutdown here
+        eprintln!("Server Error: {}", err);
+        std::process::exit(1);
+    })
+}
+```
+_`.run().await.unwrap_or_else(|err| { ... })` handles the graceful shutdown of the server. If an error occurs during the shutdown process, it will print the error message and exit the process. This enhances robustness and reliability of the server._
